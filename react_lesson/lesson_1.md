@@ -78,12 +78,16 @@ rules:{
 
 这样直接在使用时引入模块（如下：），而不需引入样式
 
-    import {DatePicker} from 'antd';   //不需要引入对应的css,因为在webpack配置里有加载less文件
+```js
+import {DatePicker} from 'antd';   //不需要引入对应的css,因为在webpack配置里有加载less文件
+```
 
 **手动引入：**
 
-    import DatePicker from 'antd/lib/date-picker';   //加载js
-    import 'antd/lib/date-picker/style/css';         //加载css
+```js
+import DatePicker from 'antd/lib/date-picker';   //加载js
+import 'antd/lib/date-picker/style/css';         //加载css
+```
 
 2、**下载已构建的js文件和css文件，然后通过script和link引入（不推荐**）
 
@@ -244,3 +248,32 @@ module.exports = {
     cnpm install webpack-dev-server -g # 安装
 
     webpack-dev-server --progress --colors # 运行
+
+#脚手架工程
+如果每次开发一个react应用都要按部就班的做所有的项目准备工作，会让人觉得很繁琐和无谓，总是有好的人想让大家的生活变的更加美好，所以有了很多好用的脚手架工程。
+
+通过脚手架工程可以让我们很快可以进入react项目的开发过程，省去了大量的前期项目开发框架的准备工作。
+
+目前比较流行的开发脚手架有：
+1. [react-boilerplate](https://github.com/mxstbr/react-boilerplate)
+2. [react-redux-starter-kit](https://github.com/davezuko/react-redux-starter-kit)
+3. [create-react-app](https://github.com/facebookincubator/create-react-app)
+
+我们就简单介绍下目前比较流行的 create-react-app。
+##简单的安装使用
+
+create-react-app安装起来实在是太简单，只需要一条命令，不像别的脚手架，还需要去clone整个脚手架的源码，再在那基础上改。
+
+    npm install -g create-react-app
+
+装完之后，生成一个新的项目，可以使用下面的命令：
+
+    create-react-app my-app
+    cd my-app/
+
+创建了my-app目录，这个时候，使用下面的命令就可以开始开发应用了。
+
+    npm start
+
+DONE真的很感谢那些通过自己的努力让大家的生活变的更好的人。：）
+
