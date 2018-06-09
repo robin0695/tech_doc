@@ -65,14 +65,17 @@ rules:{
 
 **使用babel-plugin-import:**
 
-    // .babelrc or babel-loader option
-    {
-      "plugins": [
-    ["import",
-    	 { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }
-    	]  // `style: true` 会加载 less 文件
-      ]
-    }
+```javascript
+// .babelrc or babel-loader option
+{
+    "plugins": [
+["import",
+        { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }
+    ]  // `style: true` 会加载 less 文件
+    ]
+}
+```
+
 这样直接在使用时引入模块（如下：），而不需引入样式
 
     import {DatePicker} from 'antd';   //不需要引入对应的css,因为在webpack配置里有加载less文件
@@ -88,3 +91,156 @@ rules:{
 
 ### 链接 ###
 [https://ant.design/docs/react/introduce-cn](https://ant.design/docs/react/introduce-cn)
+
+# 六、npm
+NPM是随同NodeJS一起安装的包管理工具，能解决NodeJS代码部署上的很多问题，常见的使用场景有以下几种：
+
+1. 允许用户从NPM服务器下载别人编写的第三方包到本地使用。
+1. 允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。
+1. 允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。
+
+## 全局安装与本地安装
+
+npm 的包安装分为本地安装（local）、全局安装（global）两种，从敲的命令行来看，差别只是有没有-g而已，比如 
+
+    npm install express          # 本地安装
+    npm install express -g       # 全局安装
+
+**本地安装**
+
+    1. 将安装包放在 ./node_modules 下（运行 npm 命令时所在的目录），如果没有 node_modules 目录，会在当前执行 npm 命令的目录下生成 node_modules 目录。
+    2. 可以通过 require() 来引入本地安装的包。 
+
+**全局安装**
+
+    1. 将安装包放在 /usr/local 下或者你 node 的安装目录。
+    2. 可以直接在命令行里使用。
+
+**如果要查看某个模块的版本号，可以使用命令如下：**
+
+    $ npm list grunt
+
+    projectName@projectVersion /path/to/project/folder
+    └── grunt@0.4.1
+
+##NPM 常用命令
+
+NPM提供了很多命令，例如install和publish，使用npm help可查看所有命令。
+
+1. NPM提供了很多命令，例如install和publish，使用npm help可查看所有命令。
+1. 使用npm help <command>可查看某条命令的详细帮助，例如npm help install。
+1. 在package.json所在目录下使用npm install . -g可先在本地安装当前命令行程序，可用于发布前的本地测试。
+1. 使用npm update <package>可以把当前目录下node_modules子目录里边的对应模块更新至最新版本。
+1. 使用npm update <package> -g可以把全局安装的对应命令行程序更新至最新版。
+1. 使用npm cache clear可以清空NPM本地缓存，用于对付使用相同版本号发布新版本代码的人。
+1. 使用npm unpublish <package>@<version>可以撤销发布自己发布过的某个版本代码。
+
+## 使用淘宝 NPM 镜像
+
+大家都知道国内直接使用 npm 的官方镜像是非常慢的，这里推荐使用淘宝 NPM 镜像。
+
+淘宝 NPM 镜像是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。
+
+你可以使用淘宝定制的 cnpm (gzip 压缩支持) 命令行工具代替默认的 npm:
+
+    $ npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+这样就可以使用 cnpm 命令来安装模块了：
+
+    $ cnpm install [name]
+
+# 七、webpack
+Webpack 是一个前端资源加载/打包工具。它将根据模块的依赖关系进行静态分析，然后将这些模块按照指定的规则生成对应的静态资源。
+![avatar](img/what-is-webpack.png)
+
+从图中我们可以看出，Webpack 可以将多种静态资源 js、css、less 转换成一个静态文件，减少了页面的请求。
+
+接下来我们简单为大家介绍 Webpack 的安装与使用。
+
+##安装 Webpack
+
+在安装 Webpack 前，你本地环境需要支持 node.js。
+
+由于 npm 安装速度慢，本教程使用了淘宝的镜像及其命令 cnpm，安装使用介绍参照：使用淘宝 NPM 镜像。
+
+使用 cnpm 安装 webpack：
+    
+    cnpm install webpack -g
+
+##LOADER
+
+Webpack 本身只能处理 JavaScript 模块，如果要处理其他类型的文件，就需要使用 loader 进行转换。
+
+所以如果我们需要在应用中添加 css 文件，就需要使用到 css-loader 和 style-loader，他们做两件不同的事情，css-loader 会遍历 CSS 文件，然后找到 url() 表达式然后处理他们，style-loader 会把原来的 CSS 代码插入页面中的一个 style 标签中。
+
+    cnpm install css-loader style-loader
+
+安装了 css 或者 style loader后 webpack就可以处理样式文件了。
+
+##配置文件
+
+我们可以将一些编译选项放在配置文件中，以便于统一管理：
+
+webpack.config.js 文件，代码如下所示：
+
+```javascript
+module.exports = {
+    entry: "./runoob1.js",
+    output: {
+        path: __dirname,
+        filename: "bundle.js"
+    },
+    module: {
+        loaders: [
+            { test: /\.css$/, loader: "style-loader!css-loader" }
+        ]
+    }
+};
+```
+
+##插件
+
+插件在 webpack 的配置信息 plugins 选项中指定，用于完成一些 loader 不能完成的工。
+
+webpack 自带一些插件，你可以通过 cnpm 安装一些插件。
+
+比如我们可以安装内置的 BannerPlugin 插件，用于在文件头部输出一些注释信息。
+
+修改 webpack.config.js，代码如下：
+
+``` javascript
+var webpack=require('webpack');
+
+module.exports = {
+    entry: "./runoob1.js",
+    output: {
+        path: __dirname,
+        filename: "bundle.js"
+    },
+    module: {
+        loaders: [
+            { test: /\.css$/, loader: "style-loader!css-loader" }
+        ]
+    },
+    plugins:[
+    new webpack.BannerPlugin('菜鸟教程 webpack 实例')
+    ]
+};
+
+```
+
+##开发环境
+
+当项目逐渐变大，webpack 的编译时间会变长，可以通过参数让编译的输出内容带有进度和颜色。
+
+    webpack --progress --colors
+
+如果不想每次修改模块后都重新编译，那么可以启动监听模式。开启监听模式后，没有变化的模块会在编译后缓存到内存中，而不会每次都被重新编译，所以监听模式的整体速度是很快的。
+
+    webpack --progress --colors --watch
+
+当然，我们可以使用 webpack-dev-server 开发服务，这样我们就能通过 localhost:8080 启动一个 express 静态资源 web 服务器，并且会以监听模式自动运行 webpack，在浏览器打开 http://localhost:8080/ 或 http://localhost:8080/webpack-dev-server/ 可以浏览项目中的页面和编译后的资源输出，并且通过一个 socket.io 服务实时监听它们的变化并自动刷新页面。
+
+    cnpm install webpack-dev-server -g # 安装
+
+    webpack-dev-server --progress --colors # 运行
