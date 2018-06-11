@@ -95,4 +95,5 @@ class ChildComponent extends Component {
 //将父组件渲染到id='root'的节点中
 React.render(<ParentComponent/>,document.getElementById("root"));
 ```
-
+**2.2 state**
+前面我们介绍的是props的用法，它是组件所接收的属性对象，并且不可以去改变它，正因为不可改变它，导致了组件是静态的，只能默默的接收值然后渲染界面。如果此时想要给组件添加行为和交互，组件就需要有可变化的数据来体现自己的状态（state）。react组件可以在`this.state`里面保存可变化的数据，并且`this.state`是该组件私有的，可以通过调用`this.setState()`函数修改state。
