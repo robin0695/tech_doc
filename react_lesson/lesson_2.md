@@ -97,3 +97,56 @@ React.render(<ParentComponent/>,document.getElementById("root"));
 ```
 **2.2 state**
 前面我们介绍的是props的用法，它是组件所接收的属性对象，并且不可以去改变它，正因为不可改变它，导致了组件是静态的，只能默默的接收值然后渲染界面。如果此时想要给组件添加行为和交互，组件就需要有可变化的数据来体现自己的状态（state）。react组件可以在`this.state`里面保存可变化的数据，并且`this.state`是该组件私有的，可以通过调用`this.setState()`函数修改state。
+我们可以在类的构造函数里给组件设置一个初始state,如下所示：
+```javascript
+class HelloWorld extends Component {
+    constructor () {
+        super(...arguments);
+        this.state = {
+            showDetails:false,//是否显示详情，默认不显示
+        }
+    }
+    render () {
+        let details;
+        //初始state中的showDetails为true时，才渲染details内容
+        if(this.state.showDetails){
+            details = (
+                <div>我是details内容</div>
+            );
+        }
+        //初始页面中只有“标题”，没有“详情”，给标题绑定click事件来切换详情的显示与隐藏，写法是箭头函数（ES6语法）
+        //在react中，属性一律采用驼峰式命名（onClick,而不是onclick）
+        return (
+            <div>
+                <div onClick={ () => {this.setState({showDetails:!this.state.showDetails})} }>
+                    我是标题
+                </div>
+                { details }
+            </div>
+        );
+    }
+}
+```
+
+## 3.React中的事件
+我们知道js原生事件在不同浏览器之间存在差异，这就导致我们在编写代码时需要考虑各个浏览器的兼容性，而平时使用的jquery都帮我们做了这些事，所以我们用react开发时，react实现了一个合成事件系统，它通过标准化来实现一致性，使得事件对象在不同的浏览器和平台间都能拥有相同的属性和方法
+前面我们给div绑定的click事件是这样写的：
+`onClick={ () => {this.setState({showDetails:!this.state.showDetails})} }`
+
+还可以在render之外定义好方法：
+```javascript
+toggleDetails () {
+    this.setState({showDetails:!this.state.showDetails});
+}
+onClick={ this.toggleDetails.bind(this) }
+```
+
+或者我们在构造函数里给绑定好this:
+```javascript
+constructor(props){
+    this.toggleDetails = this.toggleDetails.bind(this);
+}
+<div onClick={ this.toggleDetails }></div>
+```
+
+为什么需要bind(this)??
