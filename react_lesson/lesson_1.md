@@ -45,10 +45,8 @@ ES6是一个泛指，含义ECMAScript 5.1(2011年发布）以后的JavaScript的
 
 
 # 三、babel babel-polyfill #
-是一个广泛使用的转码器，可以将ES6代码转为ES5代码，从而在现有环境执行。比如箭头函数，这个特性还没有得到广泛支持，Babel将其转为普通函数，就能在现有的JavaScript环境执行了。
-
-但是默认只转换新的JavaScript句法（syntax），而不转换新的API，比如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如Object.assign）都不会转码。
-
+前端开发中，很多js的新语法新方法都因为浏览器的原因而不能使用，等到可以大胆使用的时候可能已经过去好几年了，babel就因此而生，它可以让你放心使用大部分的js新标准的方法，然后编译成绝大部分浏览器都支持的代码。babel升级到6.x之后，所有的插件都是可插拔的，这就意味着安装了babel之后，是不能工作的，需要配置对应的.babelrc文件才能发挥完整作用，.babelrc文件里就是对presets和plugins进行配置。
+babel默认只转换新的JavaScript句法（syntax），而不转换新的API，比如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如Object.assign）都不会转码。
 例如，ES6在Array对象上新增了Array.from方法。Babel就不会转码这个方法。如果想让这个方法运行，必须使用babel-polyfill，为当前环境提供一个垫片。
 
 
