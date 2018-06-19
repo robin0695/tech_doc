@@ -1,6 +1,9 @@
 # 一、react基础知识
 ## 1.创建react组件
 我们知道react开发就是用JavaScript去构造UI组件的过程，但是组件到底长什么样的，该如何开发？简单的说，一个react组件就是一个js文件，内含render方法，返回组件UI的描述。
+**注意： 
+（1） render方法的return后面只能返回一个根节点
+（2）{}中的内容被当成js表达式解析**
 
 常用创建组件的方式有 **3** 种（组件类的首字母必须大写）：
 **（1）**.  ES6方式定义（extends React.Component）：现在推荐的创建有状态组件的方式，如下所示：
@@ -149,4 +152,44 @@ constructor(props){
 <div onClick={ this.toggleDetails }></div>
 ```
 
-为什么需要bind(this)??
+为什么需要bind(this)??如果使用箭头函数是否还需要bind(this)??
+
+
+## 4.JSX与React中的数据绑定
+**4.1 JSX**
+所有的react组件都有一个render函数，它指定了react组件的HTML输出，JSX即JavaScript eXtension,它是一个react扩展，允许我们编写看起来像html的JavaScript代码。虽然将js和标签代码包含在同一个地方是一个很不好的习惯，但是结果是将视图与功能相结合使得对视图的推理变得非常简单。
+假如我们有一个react组件来呈现一个`h1`标签，JSX允许我们以非常类似HTML的方式声明这个元素：
+```javascript
+class Header extends React.Component {
+    render () {
+        return (
+            <h1>Hello World!</h1>
+        );
+    }
+}
+```
+虽然看起来很像html，但它本质上是用`React.createElement()`这种方式来编写声明的，JSX在运行时被翻译成常规的JavaScript，上述这个组件翻译后，看起来像这样：
+```javascript
+class HelloWorld extends React.Component {
+    render(){
+        return (
+            React.createElement('h1',{className:'large'},'Hello World!');
+        );
+    }
+}
+```
+因为JSX是JavaScript，所以我们不能使用JavaScript保留字，这包括class和for，所以设置标签上class类时使用`className`,还有一些其他属性，如标签上的属性`for`转换为`htmlFor`。
+综上，我们发现JSX不是必须的，我们在开发过程中也可以使用React.createElement方式来呈现标签结构，但是在多个标签嵌套的情况下，使用起来很麻烦：如下，所以我们推荐使用JSX。
+```javascript
+<div>
+    <img src="1.png" alt="logo">
+    <h1>welcome back!</h1>
+</div>
+//传送到浏览器的JavaScript看起来像这样：
+React.createElement("div",null,
+    React.createElement("img",{src:"1.png",alt:"logo"}),
+    React.createElement("h1",null,"welcome back!")
+);
+```
+**4.2 React数据绑定**
+
